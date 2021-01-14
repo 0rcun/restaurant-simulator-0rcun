@@ -1,0 +1,138 @@
+@startuml
+
+class Client implements Runnable{
+    /'Fields'/
+    - table : Table
+    - {static} clientCount : int
+    - name :  String
+    - table : Table
+    /'Methods'/
+    + Client()
+    + tableRequest()
+    + releaseTable()
+    + getTable() : Table
+    + setTable(table : Table)
+    + getName() : String
+    + void setName(name : String)
+    + giveOrder()
+    + run()
+}
+
+class Cook{
+    /'Fields'/
+    - {static} cookCount : int;
+    + name : String;
+    /'Methods'/
+    + Cook()
+    + {static} getCookCount() : int
+    + {static} setCookCount(cookCount : int)
+    + getName() : String
+    + setName(name : String)
+    + sendDelivery()
+
+}
+
+class CookManager{
+    /'Fields'/
+    - {static} mInstance : CookManager
+    - {static} availableInstance : int
+    - pool : List<Cook>
+    - waiting : List<Waiter>
+    /'Methods'/
+    - CookManager()
+    + {static} synchronized getInstance() : CookManager
+    + synchronized takeCook (Waiter waiter)) : Cook
+    + synchronized releaseCook(Cook cook)
+    - fillPoolAndReturn() : Cook
+    - getFromPool() : Cook
+}
+CookManager "1"*--"1" CookManager
+
+class Table{
+    /'Fields'/
+    - {static} tableCount : int
+    - name : String ;
+    - waiter : Waiter
+    /'Methods'/
+    + Table()
+    + waiterRequest()
+    + releaseWaiter()
+    + {static} getTableCount() : int
+    + {static} setTableCount(int tableCount)
+    + getName() : String
+    + setName(name : String)
+    + getWaiter() : Waiter
+    + setWaiter(waiter : Waiter)
+    + giveOrder()
+}
+
+
+
+class TableManager{
+    /'Fields'/
+    - {static} mInstance : TableManager
+    - availableInstance : int
+    - pool : List<Table>
+    - waiting : List<Client>
+    /'Methods'/
+    - TableManager()
+    + synchronized {static} getInstance() : TableManager
+    + synchronized takeTable(client : Client) : Table
+    + synchronized releaseTable(table : Table)
+    - fillPoolAndReturn() : Table
+    - getFromPool() : Table
+}
+TableManager "1"*--"1" TableManager
+
+
+class Waiter{
+    /'Fields'/
+    - {static} waiterCount : int
+    - name : String
+    - cook : Cook
+    /'Methods'/
+    + Waiter()
+    + cookRequest()
+    + releaseCook()
+    + {static} getWaiterCount() : int
+    + {static} setWaiterCount(waiterCount : int)
+    + getCook() : Cook
+    + setCook(cook : Cook)
+    + getName() : String
+    + setName(name : String)
+    + sendOrder()
+}
+
+
+
+class WaiterManager{
+    /'Fields'/
+    - {static} mInstance : WaiterManager
+    - availableInstance : int
+    - pool : List<Waiter>
+    - waiting : List<Table>
+    /'Methods'/
+    - WaiterManager()
+    + {static} synchronized getInstance() : WaiterManager
+    + synchronized takeWaiter(Table table) : Waiter
+    + synchronized releaseWaiter(waiter : Waiter)
+    - fillPoolAndReturn() : Waiter
+    - getFromPool() : Waiter
+}
+WaiterManager "1"*--"1" WaiterManager
+
+class Main{
+    + {static} clientComeToRestaurant()
+}
+
+
+TableManager --> Table : <<use>>
+WaiterManager --> Waiter : <<use>>
+CookManager --> Cook : <<use>>
+Client --> TableManager : <<use>>
+Table --> WaiterManager : <<use>>
+Waiter --> CookManager : <<use>>
+Main --> Client : <<use>>
+
+
+@enduml

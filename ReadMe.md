@@ -15,3 +15,5 @@ Burada önemli olan gerçek hayatta olduğu gibi masalarda oturan müşterilerin
 birer thred olarak düşünebilirsiniz.
 
 Ödev teslim tarihi 16 Ocak saat 00:00.
+
+## Yazılan kod ile ilgili yardımcı açıklamalar Docs içerisindedir.
